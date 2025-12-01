@@ -5,9 +5,9 @@
 #include <sys/wait.h>
 #include <limits.h>
 #include <errno.h>
+#include <limits.h>
 #include "builtin/pwd.h"
 
-#define MAX_INPUT 1024
 #define MAX_ARGS 64
 
 int main() {
@@ -22,6 +22,12 @@ int main() {
             break;
 
         input[strcspn(input, "\n")] = 0;
+
+        if (strlen(input) == 0)
+            continue;
+
+        char *command = strtok(input, " ");
+        char *arg = strtok(nullptr, " ");
 
         if (strcmp(input, "exit") == 0)
             break;
