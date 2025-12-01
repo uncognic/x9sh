@@ -16,7 +16,7 @@ int main() {
     while (1) {
         char cwd[PATH_MAX];
         if (getcwd(cwd, sizeof(cwd)) != NULL) {
-            printf("%s >", cwd);
+            printf("%s > ", cwd);
         }
         if (!fgets(input, sizeof(input), stdin))
             break;
