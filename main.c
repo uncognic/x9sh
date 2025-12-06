@@ -4,8 +4,9 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <limits.h>
-#include <errno.h>
-#include <limits.h>
+
+
+#include "builtin/cd.h"
 #include "builtin/pwd.h"
 
 #define MAX_ARGS 64
@@ -22,32 +23,40 @@ int main() {
             break;
 
         input[strcspn(input, "\n")] = 0;
-
         if (strlen(input) == 0)
             continue;
 
         char *command = strtok(input, " ");
-        char *arg = strtok(nullptr, " ");
+        if (command == nullptr)
+            continue;
 
-        if (strcmp(input, "exit") == 0)
+        if (strcmp(command, "exit") == 0) {
             break;
-        if (strcmp(input, "help") == 0)
-            printf("HELP\n");
-        if (strcmp(input, "version") == 0)
-            printf("VERSION\n");
-        if (strcmp(input, "cd") == 0)
-            printf("CD\n");
-        if (strcmp(input, "pwd") == 0)
+        }
+        if (strcmp(command, "cd") == 0) {
+            char *dir = strtok(nullptr, " ");
+            cd(dir);
+            continue;
+        }
+        if (strcmp(command, "help") == 0) {
+            printf("built-ins:\nexit version pwd cd\n");
+            continue;
+        }
+        if (strcmp(command, "version") == 0) {
+            printf("x9sh 0.0.0\n");
+            continue;
+        }
+        if (strcmp(command, "pwd") == 0) {
             if (pwd(cwd, sizeof(cwd)) == 0) {
-                printf("\n%s\n", cwd);
+                printf("%s\n", cwd);
             }
-
+            continue;
+        }
         char *args[MAX_ARGS];
         int i = 0;
-        char *token = strtok(input, " ");
-        while (token != nullptr && i < MAX_ARGS - 1) {
-            args[i++] = token;
-            token = strtok(nullptr, " ");
+        while (command != nullptr && i < MAX_ARGS - 1) {
+            args[i++] = command;
+            command = strtok(nullptr, " ");
         }
         args[i] = nullptr;
         pid_t pid = fork();
