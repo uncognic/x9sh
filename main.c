@@ -3,8 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <limits.h>
-
+#include <linux/limits.h>
 
 #include "builtin/cd.h"
 #include "builtin/pwd.h"
@@ -27,14 +26,14 @@ int main() {
             continue;
 
         char *command = strtok(input, " ");
-        if (command == nullptr)
+        if (command == NULL)
             continue;
 
         if (strcmp(command, "exit") == 0) {
             break;
         }
         if (strcmp(command, "cd") == 0) {
-            char *dir = strtok(nullptr, " ");
+            char *dir = strtok(NULL, " ");
             cd(dir);
             continue;
         }
@@ -54,18 +53,18 @@ int main() {
         }
         char *args[MAX_ARGS];
         int i = 0;
-        while (command != nullptr && i < MAX_ARGS - 1) {
+        while (command != NULL && i < MAX_ARGS - 1) {
             args[i++] = command;
-            command = strtok(nullptr, " ");
+            command = strtok(NULL, " ");
         }
-        args[i] = nullptr;
+        args[i] = NULL;
         pid_t pid = fork();
         if (pid == 0) {
             execvp(args[0], args);
             perror("x9sh");
             exit(1);
         } else if (pid > 0) {
-            wait(nullptr);
+            wait(NULL);
         } else {
             perror("x9sh");
         }

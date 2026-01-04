@@ -1,7 +1,3 @@
-//
-// Created by user on 11/30/2025.
-//
-
 #include "pwd.h"
 #include <stdio.h>
 #include <unistd.h>

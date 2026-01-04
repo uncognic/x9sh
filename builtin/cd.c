@@ -1,13 +1,10 @@
-//
-// Created by user on 11/30/2025.
-//
 #include "cd.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <limits.h>
+#include <linux/limits.h>
 
 char lastdir[PATH_MAX];
 
@@ -17,7 +14,7 @@ int cd(char *arg) {
         perror("getcwd");
         return 1;
     }
-    if (arg == nullptr) {
+    if (arg == NULL) {
         arg = getenv("HOME");
     }
     if  (!strcmp(arg, "-")) {
